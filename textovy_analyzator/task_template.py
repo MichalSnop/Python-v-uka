@@ -54,3 +54,29 @@ if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivat
         if cislo_textu < 1 or cislo_textu > 3:
             print("The entered number is not valid. The program will be terminated.")
             quit()
+        else:
+            text = TEXTS[cislo_textu - 1]
+            # Analýza vybraného textu.
+            import re
+            def text_bar_chart(data, title):
+                max_value = max(data.values())
+                for key, value in data.items():
+                    bar = "*" * value
+                    print(f'{key:3}| {bar: <17} |{value}')
+            def analyze_text(text):
+                text[0]  # Vyberte text ze vstupního seznamu
+                words = re.findall(r'\b[^\d\W]+\b', text)
+                num_words = len(words)
+
+                title_words = [word for word in words if word.istitle()]
+                num_title_words = len(title_words)
+
+                uppercase_words = [word for word in words if word.isupper()]
+                num_uppercase_words = len(uppercase_words)
+
+                lowercase_words = [word for word in words if word.islower()]
+                num_lowercase_words = len(lowercase_words)
+
+                numbers = re.findall(r'\b\d+\b', text)
+                num_numbers = len(numbers)
+                total_sum = sum(map(int, numbers))
