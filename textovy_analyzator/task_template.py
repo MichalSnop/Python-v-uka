@@ -80,3 +80,29 @@ if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivat
                 numbers = re.findall(r'\b\d+\b', text)
                 num_numbers = len(numbers)
                 total_sum = sum(map(int, numbers))
+
+                # Výstup statistik
+                print(f'There are {num_words} words in the selected text.')
+                print(f'There are {num_title_words} titlecase words.')
+                print(f'There are {num_uppercase_words} uppercase words.')
+                print(f'There are {num_lowercase_words} lowercase words.')
+                print(f'There are {num_numbers} numeric strings.')
+                print(f'The sum of all the numbers {total_sum}')
+                print('-' * 40)
+
+                # Analýza délek slov a vytvoření histogramu
+                word_lengths = [len(word) for word in words]
+                length_histogram = {i: word_lengths.count(i) for i in range(1, max(word_lengths) + 1)}
+
+                print("LEN|    OCCURRENCES    |NR.")
+                print('-' * 40)
+                text_bar_chart(length_histogram, "Word Lengths")
+            
+            # Spuštění analýzy
+            analyze_text(text)
+    except ValueError:
+        print("Invalid input. Enter text number (1, 2, 3). The program will be terminated.")
+        quit()
+else:
+    print("unregistered user, terminating the program...")
+    quit()
