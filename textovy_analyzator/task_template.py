@@ -43,13 +43,14 @@ print('-' * 40)
 # Vyžádání přihlašovacího jména a hesla
 uzivatelske_jmeno = input("username: ")
 heslo = input("password: ")
+pocet_textu = len(TEXTS)
 # Zkontrolujte, zda zadané údaje odpovídají registrovaným uživatelům
 if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivatelske_jmeno] == heslo:
-    print(f"Welcome to the app, {uzivatelske_jmeno}! We have 3 texts to be analyzed.")
+    print(f"Welcome to the app, {uzivatelske_jmeno}! We have {pocet_textu} texts to be analyzed.")
     print('-' * 40)
     # Uživatel je přihlášen, umožníme mu vybrat text
     try:
-        cislo_textu = int(input("Enter a number btw. 1 and 3 to select: "))
+        cislo_textu = int(input(f"Enter a number btw. 1 and {pocet_textu} to select: "))
         print('-' * 40)
         if cislo_textu < 1 or cislo_textu > 3:
             print("The entered number is not valid. The program will be terminated.")
