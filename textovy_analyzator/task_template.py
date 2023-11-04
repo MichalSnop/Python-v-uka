@@ -59,11 +59,12 @@ if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivat
             text = TEXTS[cislo_textu - 1]
             # Analýza vybraného textu.
             import re
-            def text_bar_chart(data, title):
-                max_value = max(data.values())
+            def text_bar_chart(data):
+                print("LEN|    OCCURRENCES    |NR.")
+                print('-' * 40)
                 for key, value in data.items():
                     bar = "*" * value
-                    print(f'{key:3}| {bar: <17} |{value}')
+                    print(f'{key:3}| {bar: <18} |{value}')
             def analyze_text(text):
                 text[0]  # Vyberte text ze vstupního seznamu
                 words = re.findall(r'\b[^\d\W]+\b', text)
@@ -93,12 +94,12 @@ if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivat
 
                 # Analýza délek slov a vytvoření histogramu
                 word_lengths = [len(word) for word in words]
-                length_histogram = {i: word_lengths.count(i) for i in range(1, max(word_lengths) + 1)}
-
-                print("LEN|    OCCURRENCES    |NR.")
-                print('-' * 40)
-                text_bar_chart(length_histogram, "Word Lengths")
-            
+                
+                if word_lengths:
+                    length_histogram = {i: word_lengths.count(i) for i in range(1, max(word_lengths) + 1)}
+                    text_bar_chart(length_histogram)
+                else:
+                    print("No words to analyze.")
             # Spuštění analýzy
             analyze_text(text)
     except ValueError:
