@@ -52,7 +52,7 @@ if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivat
     try:
         cislo_textu = int(input(f"Enter a number btw. 1 and {pocet_textu} to select: "))
         print('-' * 40)
-        if cislo_textu < 1 or cislo_textu > 3:
+        if cislo_textu < 1 or cislo_textu > pocet_textu:
             print("The entered number is not valid. The program will be terminated.")
             quit()
         else:
@@ -60,7 +60,7 @@ if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivat
             # Analýza vybraného textu.
             import re
             def text_bar_chart(data):
-                print("LEN|    OCCURRENCES    |NR.")
+                print("LEN|    OCCURRENCES     |NR.")
                 print('-' * 40)
                 for key, value in data.items():
                     bar = "*" * value
