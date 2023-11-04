@@ -102,7 +102,7 @@ if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivat
             # Spuštění analýzy
             analyze_text(text)
     except ValueError:
-        print("Invalid input. Enter text number (1, 2, 3). The program will be terminated.")
+        print(f"Invalid input. Enter text number (1 and {pocet_textu}). The program will be terminated.")
         quit()
 else:
     print("unregistered user, terminating the program...")
