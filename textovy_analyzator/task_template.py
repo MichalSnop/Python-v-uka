@@ -58,32 +58,26 @@ if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivat
         else:
             text = TEXTS[cislo_textu - 1]
             # Analýza vybraného textu.
-            import re
             def text_bar_chart(data):
-                print("LEN|    OCCURRENCES     |NR.")
+                print("LEN|    OCCURRENCES    |NR.")
                 print('-' * 40)
                 for key, value in data.items():
                     bar = "*" * value
-                    print(f'{key:3}| {bar: <18} |{value}')
+                    print(f'{key:3}| {bar: <18}|{value}')
+
             def analyze_text(text):
-                text[0]  # Vyberte text ze vstupního seznamu
-                words = re.findall(r'\b[^\d\W]+\b', text)
-                num_words = len(words)
+                vycistena_slova = []
+                for word in text.split():
+                    ciste_slovo = word.strip(",.:;'")
+                    vycistena_slova.append(ciste_slovo)
 
-                title_words = [word for word in words if word.istitle()]
-                num_title_words = len(title_words)
+                num_words = len(vycistena_slova)
+                num_title_words = sum(1 for word in vycistena_slova if word.istitle())
+                num_uppercase_words = sum(1 for word in vycistena_slova if word.isupper())
+                num_lowercase_words = sum(1 for word in vycistena_slova if word.islower())
+                num_numbers = sum(1 for word in vycistena_slova if word.isdigit())
+                total_sum = sum(int(word) for word in vycistena_slova if word.isdigit())
 
-                uppercase_words = [word for word in words if word.isupper()]
-                num_uppercase_words = len(uppercase_words)
-
-                lowercase_words = [word for word in words if word.islower()]
-                num_lowercase_words = len(lowercase_words)
-
-                numbers = re.findall(r'\b\d+\b', text)
-                num_numbers = len(numbers)
-                total_sum = sum(map(int, numbers))
-
-                # Výstup statistik
                 print(f'There are {num_words} words in the selected text.')
                 print(f'There are {num_title_words} titlecase words.')
                 print(f'There are {num_uppercase_words} uppercase words.')
@@ -92,14 +86,18 @@ if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivat
                 print(f'The sum of all the numbers {total_sum}')
                 print('-' * 40)
 
-                # Analýza délek slov a vytvoření histogramu
-                word_lengths = [len(word) for word in words]
-                
-                if word_lengths:
-                    length_histogram = {i: word_lengths.count(i) for i in range(1, max(word_lengths) + 1)}
-                    text_bar_chart(length_histogram)
-                else:
-                    print("No words to analyze.")
+                word_length_count = {}
+                for word in vycistena_slova:
+                    if len(word) in word_length_count:
+                        word_length_count[len(word)] += 1
+                    else:
+                        word_length_count[len(word)] = 1
+
+                # Seřazení délek slov podle velikosti
+                sorted_word_length_count = {k: v for k, v in sorted(word_length_count.items(), key=lambda item: item[0])}
+
+                text_bar_chart(sorted_word_length_count)
+
             # Spuštění analýzy
             analyze_text(text)
     except ValueError:
