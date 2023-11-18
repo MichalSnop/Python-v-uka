@@ -10,7 +10,7 @@ def display_board(board):
     for row in board:
         print("+---+---+---+")
         print("| " + " | ".join(row) + " |")
-    print("+---+---+---+")
+        print("+---+---+---+")
 
 def check_winner(board, mark):
     # Kontrola výherních kombinací
