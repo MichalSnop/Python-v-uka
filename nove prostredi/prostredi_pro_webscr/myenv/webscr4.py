@@ -36,3 +36,42 @@ def save_to_csv(*data):
             envelope = envelope_info[1]
             vote = envelope_info[2]
             f_writer.writerow([code, city, volic, envelope, vote] + party_number)
+#Tato funkce provádí součet čísel pro jednotlivé strany a obce, které mají více než jeden volební obvod.
+def get_sum_numbers(middle_numbers):
+    nums = []
+    for index, row in enumerate(middle_numbers):
+        for pos, num in enumerate(row):
+            if index == 0:
+                nums.append(int(num))
+            else:
+                nums[pos] += int(middle_numbers[index][pos])
+    return nums
+#Tato funkce provádí součet hlasů pro jednotlivé strany přes více volebních obvodů v rámci daného města nebo obce.
+def sum_party_numbers(middle_links):
+    all_numbers = []
+    for web in middle_links:
+        middle_numbers = []
+        for web_page in web:
+            url_arg = MAIN_URL + web_page
+            soup_3 = get_html(url_arg)
+            numbers = []
+            for index, tb in enumerate(soup_3.find_all("div", {"class": "t2_470"})):
+                for td in tb.find_all("td", {"headers": NUMBER.format(index + 1, index + 1)}):
+                    if td.text == "-":
+                        continue
+                    else:
+                        numbers.append(td.text)
+            middle_numbers.append(numbers)
+    sum_numbers = get_sum_numbers(middle_numbers)
+    return sum_numbers
+
+#Tato funkce získává počet hlasů pro jednotlivé politické strany.
+def get_party_numbers(soup_2):
+    numbers = []
+    for index, tb in enumerate(soup_2.find_all("div", {"class": "t2_470"})):
+        for number in tb.find_all("td", {"headers": NUMBER.format(index + 1, index + 1)}):
+            if number.text == "-":
+                continue
+            else:
+                numbers.append(number.text)
+    return numbers
