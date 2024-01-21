@@ -75,6 +75,7 @@ def get_party_numbers(soup_2):
             else:
                 numbers.append(number.text)
     return numbers
+
 #Tato funkce spočítá informace jako počet registrovaných voličů, vydaných obálek a platných hlasů pro všechny volební obvody daného města nebo obce.
 def sum_header_data(middle_links):
     for web in middle_links:
@@ -104,3 +105,46 @@ def sum_header_data(middle_links):
                 provide_envelopes += int(vyd_ob.replace(",", "."))
                 valid_votes += int(pl_hl.replace(",", "."))
         return [str(volici_in_list), str(provide_envelopes), str(valid_votes)]
+
+#Tato funkce získává informace o kandidujících stranách.
+def get_cand_parties(soup_2):
+    cand_parties = []
+    for index, tb in enumerate(soup_2.find_all("div", {"class": "t2_470"})):
+        for party in tb.find_all("td", {"headers": CAND_PARTY.format(index + 1, index + 1)}):
+            if party.text == '-':
+                continue
+            else:
+                cand_parties.append(party.text)
+    return cand_parties   
+
+#Tato funkce získává odkazy na další stránky s dalšími informacemi pro všechny volební obvody daného města nebo obce.
+def get_middle_links(soup_2):
+    district_links = []
+    for middle_table in soup_2.find_all("table", {"class": "table"}):
+        for middle_td in middle_table.find_all("td", {"headers": "s1"}):
+            for middle_link in middle_td.find_all("a"):
+                district_links.append(middle_link.get("href"))
+    return district_links
+    
+#Tato funkce získává informace jako počet registrovaných voličů, vydaných obálek a platných hlasů pro všechny volební obvody daného města nebo obce bez jejich součtu.
+def get_all_header_data(soup_2):
+    for tb in soup_2.find_all("table", {"id": "ps311_t1"}):
+        header_data = []
+        volici_in_list, provide_envelopes, valid_votes = '', '', ''
+        tds = tb.find_all("td")
+        for char in tds[3].text:
+            if char.isnumeric() or char == ",":
+                volici_in_list += str(char)
+            else:
+                continue
+        for char in tds[4].text:
+            if char.isnumeric() or char == ",":
+                provide_envelopes += str(char)
+            else:
+                continue
+        for char in tds[7].text:
+            if char.isnumeric() or char == ",":
+                valid_votes += str(char)
+            else:
+                continue
+        return [volici_in_list, provide_envelopes, valid_votes]
