@@ -75,3 +75,32 @@ def get_party_numbers(soup_2):
             else:
                 numbers.append(number.text)
     return numbers
+#Tato funkce spočítá informace jako počet registrovaných voličů, vydaných obálek a platných hlasů pro všechny volební obvody daného města nebo obce.
+def sum_header_data(middle_links):
+    for web in middle_links:
+        volici_in_list, provide_envelopes, valid_votes = 0, 0, 0
+        for web_page in web:
+            url_arg = MAIN_URL + web_page
+            soup_3 = get_html(url_arg)
+            for tb in soup_3.find_all("table", {"id": "ps311_6_t1"}):
+                vol_sez, vyd_ob, pl_hl = '', '', ''
+                tds = tb.find_all("td")
+                for char in tds[1].text:
+                    if char.isnumeric() or char == ",":
+                        vol_sez += str(char)
+                    else:
+                        continue
+                for char in tds[3].text:
+                    if char.isnumeric() or char == ",":
+                        vyd_ob += str(char)
+                    else:
+                        continue
+                for char in tds[4].text:
+                    if char.isnumeric() or char == ",":
+                        pl_hl += str(char)
+                    else:
+                        continue
+                volici_in_list += int(vol_sez.replace(",", "."))
+                provide_envelopes += int(vyd_ob.replace(",", "."))
+                valid_votes += int(pl_hl.replace(",", "."))
+        return [str(volici_in_list), str(provide_envelopes), str(valid_votes)]
