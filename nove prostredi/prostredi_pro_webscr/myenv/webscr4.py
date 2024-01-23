@@ -166,3 +166,18 @@ def get_second_data(links):
             party_numbers.append(sum_party_numbers(middle_links))
     return all_header_data, cand_parties, party_numbers
 
+#Tato funkce získává kódy obcí, názvy měst a odkazy na další stránky s informacemi o volebních obvodech z hlavní stránky.
+def get_first_columns(soup):
+    tables = soup.find_all("div", {"class": "t3"})
+    codes, cities, links = [], [], []
+    for index, tr in enumerate(tables):
+        codes += [td.text for td in tr.find_all("td", {"headers": CODE.format(index + 1, index + 1)}) if
+                  not td.text == "-"]
+    for index, tr in enumerate(tables):
+        cities += [td.text for td in tr.find_all("td", {"headers": CITY.format(index + 1, index + 1)}) if
+                   not td.text == "-"]
+    for index, tr in enumerate(tables):
+        for td in tr.find_all("td", {"headers": LINK.format(index + 1)}):
+            for link in td.find_all("a"):
+                links.append(link.get("href"))
+    return codes, cities, links
