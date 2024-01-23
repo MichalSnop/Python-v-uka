@@ -1,5 +1,5 @@
 """
-webscr3.py: third project to Engeto Online Python Academy
+webscr4.py: third project to Engeto Online Python Academy
 author: Michal Snopko
 email: michalsnopko84@gmail.com
 discord: michalsn.
@@ -148,3 +148,21 @@ def get_all_header_data(soup_2):
             else:
                 continue
         return [volici_in_list, provide_envelopes, valid_votes]
+    
+#Tato funkce získává data z druhé úrovně stránek volebních obvodů, včetně informací o kandidujících stranách a počtu hlasů.
+def get_second_data(links):
+    all_header_data, middle_links, party_numbers = [], [], []
+    for link in links:
+        url_arg = MAIN_URL + link
+        if "vyber" in link:
+            soup_2 = get_html(url_arg)
+            all_header_data.append(get_all_header_data(soup_2))
+            cand_parties = get_cand_parties(soup_2)
+            party_numbers.append(get_party_numbers(soup_2))
+        else:
+            soup_2 = get_html(url_arg)
+            middle_links.append(get_middle_links(soup_2))
+            all_header_data.append(sum_header_data(middle_links))
+            party_numbers.append(sum_party_numbers(middle_links))
+    return all_header_data, cand_parties, party_numbers
+
