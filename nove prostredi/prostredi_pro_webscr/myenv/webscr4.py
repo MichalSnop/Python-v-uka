@@ -181,3 +181,25 @@ def get_first_columns(soup):
             for link in td.find_all("a"):
                 links.append(link.get("href"))
     return codes, cities, links
+
+#Tato funkce získává HTML kód stránky pomocí knihovny requests a BeautifulSoup.
+def get_html(url):
+    r = requests.get(url)
+    html = r.text
+    return BeautifulSoup(html, "html.parser")
+
+try:
+    url, OUTPUT_FILE = sys.argv[1:]
+    if not ".cz" in url and not ".csv" in OUTPUT_FILE:
+        print("Spatne poradi argumentu. UKONCUJI election-scraper")
+        exit()
+except ValueError as e:
+    print(f"{e.__class__.__name__}: Nespravny pocet zadanych argumentu. UKONCUJI election-scraper")
+    exit()
+
+print(f"STAHUJI DATA Z VYBRANEHO URL: {url}")
+soup = get_html(url)
+codes, cities, links = get_first_columns(soup)
+all_header_data, cand_parties, party_numbers = get_second_data(links)
+save_to_csv(codes, cities, all_header_data, cand_parties, party_numbers)
+print("UKONCUJI election_scraper")
