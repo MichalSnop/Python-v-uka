@@ -13,6 +13,7 @@ Počet platných hlasů
 Počet hlasů pro jednotlivé politické strany
 
 Spuštění Skriptu:
-Spusťte skript s dvěma argumenty (odkaz a název výstupního souboru):
+Jako první krok přejděte do virtuálního prostředí. příkazem CD 'umístění souboru'
+Spusťte skript s dvěma argumenty (odkaz a název výstupního souboru): např... python webscr4.py 'https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=14&xnumnuts=8103' 'vysledky_karvina.csv'
 odkaz: Odkaz na konkrétní územní celek na stránce voleb z roku 2017.
 vysledky.csv: Název výstupního souboru ve formátu CSV.
